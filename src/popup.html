@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+</head>
+<body>
+    <h1>My Awesome Plugin</h1>
+    <script>
+        YUI().use('node', function (Y) {
+            Y.one('h1').setContent('Hello World from YUI3!');
+        });
+    </script>
+</body>
+</html>

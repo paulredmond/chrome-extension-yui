@@ -1,0 +1,19 @@
+//
+// Google Chrome Extension framework using YUI3.
+// @link http://goredmonster.com
+// @author Paul Redmond
+//
+
+{
+    "name": "Chrome Extension Framework Using YUI3",
+    "version": "0.1.0",
+    "description": "A Chrome extension framework for building extensions with YUI3.",
+    "permissions": [
+        "http://yui.yahooapis.com/*"
+    ],
+    "background_page": "background.html",
+    "browser_action": {
+        "default_icon": "img/ui/icon.png",
+        "popup": "popup.html"
+    }
+}

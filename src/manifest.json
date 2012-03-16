@@ -9,7 +9,8 @@
     "version": "0.1.0",
     "description": "A Chrome extension framework for building extensions with YUI3.",
     "permissions": [
-        "http://yui.yahooapis.com/*"
+        "http://yui.yahooapis.com/*",
+        "http://www.sheknows.com/*"
     ],
     "background_page": "background.html",
     "browser_action": {

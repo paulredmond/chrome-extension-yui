@@ -30,10 +30,7 @@ YUI.add("rss-base", function (Y) {
             permalink: {
                 value: ''
             },
-            dateStr: {
-                value: ''
-            },
-            pubDate: {
+            date: {
                 value: ''
             }
         }
@@ -78,29 +75,56 @@ YUI.add("rss-base", function (Y) {
                 }
             });
         },
-        
+
+        /**
+         * Parse the XML response and normalize with DataSchema.
+         *
+         * If the response object doesn't contain responseXML, uses DataType to attempt to parse string.
+         *
+         * @param response
+         * @return {*}
+         */
         parse: function (response) {
             var self = this,
-                items = response.responseXML.getElementsByTagName('item'),
-                data = [],
-                months = "January February March April May June July August September October November December".split(" ");
-                
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i],
-                    pubDate = item.getElementsByTagName('pubDate')[0].textContent;
-                    date = new Date(pubDate);
-                    
-                self.add({
-                    title: item.getElementsByTagName('title')[0].textContent,
-                    description: item.getElementsByTagName('description')[0].textContent,
-                    permalink: item.getElementsByTagName('link')[0].textContent,
-                    dateStr: months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear(),
-                    pubDate: date
-                });
-            }
+                xml = response.responseXML || Y.DataType.XML.parse(response.responseText),
+                schema,
+                data;
+
+            schema = {
+                metaFields: {
+                    title: "//channel/title",
+                    link: "//channel/link",
+                    description: "//channel/description",
+                    language: "//channel/language"
+                },
+                resultListLocator: 'item',
+                resultFields: [
+                    {
+                        locator: 'title',
+                        key: 'title'
+                    },
+                    {
+                        locator: 'description',
+                        key: 'description'
+                    },
+                    {
+                        locator: 'permalink',
+                        key: 'permalink'
+                    },
+                    {
+                        locator: 'pubDate',
+                        key: 'date'
+                    }
+                ]
+            };
+
+            data = Y.DataSchema.XML.apply(schema, xml);
+            self.add(data.results);
+
+            //@todo Maybe set meta fields?
 
             return self;
         }
     };
     
-}, "1.0.0", { requires: ["io", "model", "model-list"] });
+}, "1.0.0", { requires: ["io", "model", "model-list", "datatype", "dataschema"] });
